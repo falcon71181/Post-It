@@ -4,7 +4,7 @@ import { AvatarIcon, EnterIcon } from '@radix-ui/react-icons';
 
 const NavBar = () => {
   return (
-    <div className='w-full max-h-20 mb-5 px-5 py-4 flex justify-between rounded-b-lg items-center border-b-2 border-muted'>
+    <div className='w-full max-h-20 mb-5 px-3 py-4 flex justify-between rounded-b-lg items-center border-b-2 border-muted'>
       <section className='flex items-center gap-2'>
         <Link href="/" className='text-2xl font-extrabold font-mono'>Post - It</Link>
       </section>

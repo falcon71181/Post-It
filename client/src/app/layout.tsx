@@ -26,14 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased scroll-smooth bg-background">
-        <div className="h-full max-w-7xl mx-auto">
+        <div className="min-h-screen w-full sm:w-10/12 md:w-9/12 mx-auto flex flex-col transition-all duration-500">
           <ThemeProvider
             enableSystem
             defaultTheme="system"
             attribute="class"
           >
             <NavBar />
-            <div>{children}</div>
+            <div className="flex-grow">{children}</div>
             <Background />
           </ThemeProvider>
         </div>
