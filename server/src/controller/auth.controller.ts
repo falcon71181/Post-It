@@ -1,14 +1,13 @@
 import { pool } from "../database/db";
 import { createUserTable } from "../database/users";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { createToken } from "../lib/token";
 import type { FastifyRequest, FastifyReply } from "fastify";
-import type { RegisterUserConfig } from "../types/auth";
+import type { LoginUserConfig, RegisterUserConfig } from "../types/auth";
 import type { QueryResult } from "pg";
 
 // register an user
 const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply) => {
-
   try {
     console.warn("DEBUGPRINT[2]: auth.controller.ts:13: req=", req.body);
 
@@ -16,7 +15,7 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
 
     // check if any field is missing
     if (!username || !first_name || !email || !password || !confirmPassword) {
-      res.status(400).send({ error: "Require all fields (username, first_name, email, password, confirmPassword)." })
+      return res.status(400).send({ error: "Require all fields (username, first_name, email, password, confirmPassword)." })
     }
 
     // trim all fields
@@ -65,4 +64,55 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
   }
 }
 
-export { registerUser };
+const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: FastifyReply) => {
+  console.log('here', req.body);
+  const { username, email, password } = req.body;
+
+  if (!username && !email) {
+    const error = 'Enter either your username or email to login';
+    return res.status(400).send({ error });
+  }
+
+  try {
+    // Setting DB attribute name and value from available field in req.body
+    const userAttr = username ? 'username' : 'email';
+    const userAttrValue = username ? username : email as string;
+
+    await createUserTable();
+    const result = await pool.query(
+      `SELECT username, email, password FROM users WHERE ${userAttr} = $1`,
+      [userAttrValue]
+    );
+    const user: { username: string, email: string, password: string} | undefined = result.rows[0];
+
+    if (!user) {
+        const error = "User not found.";
+        return res.status(404).send({ error });
+    }
+
+    const correctPassword = await compare(password, user.password);
+
+    if (!correctPassword) {
+        const error = "Incorrect Password";
+        return res.status(401).send({ error });
+    }
+
+    // Sucessfull login
+    const token = createToken(user.email, user.username);
+    const response = {
+        message: 'User logged in successfully',
+        username: user.username,
+        email: user.email,
+        token
+    }
+
+    res.send({ response });
+  } catch (error) {
+    console.error(error);
+
+    const errorMsg = 'Internal Server Error';
+    res.status(500).send({ error: errorMsg });
+  }
+}
+
+export { registerUser, loginUser };
