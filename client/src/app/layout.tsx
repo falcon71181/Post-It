@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import NavBar from "@/components/nav/NavBar";
+import { Background } from "@/components/theme/BackgroundGrid";
 import { Caveat } from 'next/font/google'
 import "./globals.css";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           >
             <NavBar />
             <div className="flex-grow">{children}</div>
+            <Background />
           </ThemeProvider>
         </div>
       </body>
