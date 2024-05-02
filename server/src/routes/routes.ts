@@ -1,7 +1,7 @@
 import { user_routes } from "./users";
-import type { FastifyInstance, FastifyPluginOptions } from "fastify";
+import type { FastifyInstance } from "fastify";
 
-const routes = async (app: FastifyInstance, _options: FastifyPluginOptions) => {
+const routes = async (app: FastifyInstance) => {
   // Health check
   app.get("/health", (_req, res) => {
     res.status(200).send();

@@ -7,3 +7,9 @@ export type RegisterUserConfig = {
   password: string;
   confirmPassword: string;
 }
+
+export type LoginUserConfig = {
+    username?: string;
+    email?: string;
+    password: string;
+}
