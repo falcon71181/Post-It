@@ -7,37 +7,37 @@ import "./globals.css";
 
 
 export const metadata: Metadata = {
-    title: "Post-It",
-    description: "Community driven forum",
+  title: "Post-It",
+  description: "Community driven forum",
 };
 
 const caveat = Caveat({
-    subsets: ['latin'],
-    weight: ['700'],
-    variable: '--font-caveat',
-    display: 'swap'
+  subsets: ['latin'],
+  weight: ['700'],
+  variable: '--font-caveat',
+  display: 'swap'
 })
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body className="font-sans antialiased scroll-smooth bg-background">
-                <div className="h-full max-w-5xl mx-auto">
-                    <ThemeProvider
-                        enableSystem
-                        defaultTheme="system"
-                        attribute="class"
-                    >
-                        <NavBar />
-                        <div>{children}</div>
-                        <Background />
-                    </ThemeProvider>
-                </div>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className="font-sans antialiased scroll-smooth bg-background">
+        <div className="h-full max-w-7xl mx-auto">
+          <ThemeProvider
+            enableSystem
+            defaultTheme="system"
+            attribute="class"
+          >
+            <NavBar />
+            <div>{children}</div>
+            <Background />
+          </ThemeProvider>
+        </div>
+      </body>
+    </html>
+  );
 }
