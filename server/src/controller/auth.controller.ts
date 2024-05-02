@@ -65,7 +65,6 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
 }
 
 const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: FastifyReply) => {
-  console.log('here', req.body);
   const { username, email, password } = req.body;
 
   if (!username && !email) {
