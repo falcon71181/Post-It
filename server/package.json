@@ -6,13 +6,15 @@
     "dev": "bun --hot run src/server.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/node": "^20.12.7",
+    "@types/pg": "^8.11.5",
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@types/node": "^20.12.7",
-    "fastify": "^4.26.2"
+    "fastify": "^4.26.2",
+    "pg": "^8.11.5"
   }
 }
