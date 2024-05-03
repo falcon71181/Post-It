@@ -6,7 +6,7 @@ const NavBar = () => {
   return (
     <div className='w-full max-h-20 mb-5 px-3 py-4 flex justify-between rounded-b-lg items-center border-b-2 border-muted'>
       <section className='flex items-center gap-2'>
-        <Link href="/" className='text-2xl font-extrabold font-mono'>Post - It</Link>
+        <Link href="/" className='text-2xl font-extrabold font-caveat tracking-widest select-none'>Post - It</Link>
       </section>
       <section className='flex items-center gap-3'>
         <ThemeToggle />
