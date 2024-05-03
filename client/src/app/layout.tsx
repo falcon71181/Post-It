@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(
         "font-sans antialiased scroll-smooth bg-background", caveat.variable)}>
-        <div className="min-h-screen w-full sm:w-10/12 md:w-9/12 mx-auto flex flex-col transition-all duration-500">
+        <div className="min-h-screen w-full sm:w-10/12 md:w-9/12 mx-auto flex flex-col transition-all duration-200">
           <ThemeProvider
             enableSystem
             defaultTheme="system"
