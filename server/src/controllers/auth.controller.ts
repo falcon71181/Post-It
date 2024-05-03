@@ -7,6 +7,7 @@ import type { LoginUserConfig, RegisterUserConfig } from "../types/auth";
 import type { QueryResult } from "pg";
 
 // register an user
+// TODO: add strong password checker
 const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply) => {
   try {
 
@@ -99,17 +100,14 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
     const token = createToken(user.email, user.username);
     const response = {
       message: 'User logged in successfully',
-      username: user.username,
-      email: user.email,
-      token
+      username: user.username as string,
+      email: user.email as string,
+      token: token as string,
     }
 
     res.send({ response });
   } catch (error) {
-    console.error(error);
-
-    const errorMsg = 'Internal Server Error';
-    res.status(500).send({ error: errorMsg });
+    res.status(500).send({ error: "Internal Server Error" });
   }
 }
 

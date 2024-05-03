@@ -4,13 +4,14 @@ import { pool } from "../database/db";
 import type { QueryResult } from "pg";
 import type { FastifyInstance, FastifyRequest, FastifyReply, preHandlerAsyncHookHandler } from "fastify";
 import { createUserTable } from "../database/users";
+import { createAdminTable } from "../database/admins";
 
 // Secret key for JWT signing
 const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
 
 // Middleware function to authenticate requests
 export const isAuth: preHandlerAsyncHookHandler = async (
-  req: FastifyRequest & { email?: string, username?: string }, // Attaching email to req object for next middleware or req handler
+  req: FastifyRequest & { email?: string, username?: string, isAdmin?: boolean }, // Attaching email to req object for next middleware or req handler
   res: FastifyReply,
 ) => {
   try {
@@ -37,10 +38,24 @@ export const isAuth: preHandlerAsyncHookHandler = async (
     const { email, username } = payload;
 
     await createUserTable();
+    await createAdminTable();
+
+    // Query database to check if user is admin or not
+    const admin: QueryResult = await pool.query(
+      `SELECT * FROM admins WHERE email = $1`,
+      [email as string],
+    );
+
+    if (admin.rows.length === 0) {
+      req.isAdmin = false;
+    } else if (admin.rows.length > 0) {
+      req.isAdmin = true;
+    }
+
     // Query database to find user by email
     const user: QueryResult = await pool.query(
       `SELECT * FROM users WHERE email = $1`,
-      [email],
+      [email as string],
     );
 
     // Check if user exists
