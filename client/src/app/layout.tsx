@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { AuthContextProvider } from "@/contexts/auth";
 import NavBar from "@/components/nav/NavBar";
 import { Background } from "@/components/theme/BackgroundGrid";
 import { Caveat } from 'next/font/google'
@@ -34,8 +35,10 @@ export default function RootLayout({
             defaultTheme="system"
             attribute="class"
           >
-            <NavBar />
-            <div className="flex-grow">{children}</div>
+            <AuthContextProvider>
+              <NavBar />
+              <div className="flex-grow">{children}</div>
+            </AuthContextProvider>
             <Background />
           </ThemeProvider>
         </div>

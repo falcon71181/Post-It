@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 type LoginUser = {
   email?: string;
   username?: string;
@@ -24,4 +26,9 @@ type AuthCheck = {
   error: string | null;
 }
 
-export type { LoginUser, RegisterUser, AuthUser, AuthCheck };
+type AuthContextType = {
+  authUser: AuthUser | null;
+  setAuthUser: Dispatch<SetStateAction<AuthUser | null>>;
+}
+
+export type { LoginUser, RegisterUser, AuthUser, AuthCheck, AuthContextType };

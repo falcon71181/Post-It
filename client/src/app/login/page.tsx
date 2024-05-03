@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useAuthContext } from "@/contexts/auth";
 import type { AuthCheck, AuthUser, LoginUser } from "@/types/auth";
 
 const initialState: AuthCheck = {
@@ -11,6 +12,7 @@ const initialState: AuthCheck = {
 
 const Login = () => {
   const SERVER = process.env.NEXT_PUBLIC_SERVER;
+  const { authUser, setAuthUser } = useAuthContext();
   const [loginVia, setLoginVia] = useState(false);
 
   const handleRegisteration = async (_preState: any, formData: FormData) => {
@@ -34,6 +36,9 @@ const Login = () => {
 
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("token", responseData.username);
+
+        // INFO: updating auth context
+        setAuthUser(user);
 
         const newState: AuthCheck = {
           user,
