@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 
-type JwtPayload = {
+export type JwtPayload = {
   email: string;
   username: string;
 }

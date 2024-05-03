@@ -9,7 +9,6 @@ import type { QueryResult } from "pg";
 // register an user
 const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply) => {
   try {
-    console.warn("DEBUGPRINT[2]: auth.controller.ts:13: req=", req.body);
 
     let { username, first_name, middle_name, last_name, email, password, confirmPassword }: RegisterUserConfig = req.body;
 
@@ -82,27 +81,27 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
       `SELECT username, email, password FROM users WHERE ${userAttr} = $1`,
       [userAttrValue]
     );
-    const user: { username: string, email: string, password: string} | undefined = result.rows[0];
+    const user: { username: string, email: string, password: string } | undefined = result.rows[0];
 
     if (!user) {
-        const error = "User not found.";
-        return res.status(404).send({ error });
+      const error = "User not found.";
+      return res.status(404).send({ error });
     }
 
     const correctPassword = await compare(password, user.password);
 
     if (!correctPassword) {
-        const error = "Incorrect Password";
-        return res.status(401).send({ error });
+      const error = "Incorrect Password";
+      return res.status(401).send({ error });
     }
 
     // Sucessfull login
     const token = createToken(user.email, user.username);
     const response = {
-        message: 'User logged in successfully',
-        username: user.username,
-        email: user.email,
-        token
+      message: 'User logged in successfully',
+      username: user.username,
+      email: user.email,
+      token
     }
 
     res.send({ response });
