@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import NavBar from "@/components/nav/NavBar";
 import { Background } from "@/components/theme/BackgroundGrid";
 import { Caveat } from 'next/font/google'
+import { cn } from "../lib/utils";
 import "./globals.css";
 
 
@@ -25,7 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased scroll-smooth bg-background">
+      <body className={cn(
+        "font-sans antialiased scroll-smooth bg-background", caveat.variable)}>
         <div className="min-h-screen w-full sm:w-10/12 md:w-9/12 mx-auto flex flex-col transition-all duration-500">
           <ThemeProvider
             enableSystem

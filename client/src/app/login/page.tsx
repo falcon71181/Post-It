@@ -57,11 +57,11 @@ const Login = () => {
   const [state, formAction] = useFormState(handleRegisteration, initialState);
   return (
     <div className="px-3 min-h-[80vh] flex justify-center items-center border border-cyan-300">
-      <div className="w-full sm:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-7/12 p-5 flex flex-col gap-2 bg-background border border-border transition-all duration-1000">
-        <h1 className="font-semibold text-3xl">Login Into Account</h1>
-        <h1 className="text-sm text-neutral-400">Enter your valid details to login into your account.</h1>
+      <div className="w-full sm:w-9/12 lg:w-6/12 xl:w-5/12 p-5 flex flex-col gap-2 bg-background border border-border transition-all duration-1000">
+        <h1 className="font-semibold text-2xl md:text-3xl">Login Into Account</h1>
+        <h1 className="text-xs md:text-sm text-neutral-400">Enter your valid details to login into your account.</h1>
         <form action={formAction} className="grid grid-cols-3 gap-y-2 gap-x-3">
-          <h1 className="text-base dark:text-neutral-300 col-span-3">{loginVia ? "Username" : "Email"}</h1>
+          <h1 className="text-sm md:text-base dark:text-neutral-300 col-span-3">{loginVia ? "Username" : "Email"}</h1>
           <input
             type={loginVia ? "text" : "email"}
             id={loginVia ? "username" : "email"}
@@ -71,7 +71,7 @@ const Login = () => {
           <div className="text-blue-300 col-span-3 text-xs font-semibold text-right mr-3 hover:underline hover:underline-offset-4 cursor-pointer"
             onClick={() => setLoginVia(!loginVia)}
           >{loginVia ? "Login by using username" : "Login by using email"}</div>
-          <h1 className="text-base dark:text-neutral-300 col-span-3">Password</h1>
+          <h1 className="text-sm md:text-base dark:text-neutral-300 col-span-3">Password</h1>
           <input
             type="password"
             id="password"
@@ -79,7 +79,7 @@ const Login = () => {
             placeholder="password"
             required />
         </form>
-        <button type="submit" className="w-full px-3 py-2 mt-5 text-lg dark:text-black font-semibold flex items-center justify-center rounded-md border border-border cursor-pointer bg-neutral-300 hover:bg-neutral-300/80 select-none transition-colors duration-200">
+        <button type="submit" className="w-full px-3 py-2 mt-5 text-base md:text-lg dark:text-black font-semibold flex items-center justify-center rounded-md border border-border cursor-pointer bg-neutral-300 hover:bg-neutral-300/80 select-none transition-all duration-200">
           Login Into Account
         </button>
       </div>

@@ -20,8 +20,8 @@ const NavBar = () => {
 const Register = () => {
   return (
     <Link href="/register" className='flex items-center gap-2 h-9 px-4 py-2 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
-      <AvatarIcon className='size-5' />
-      <h1 className='text-lg pb-1'>Register</h1>
+      <AvatarIcon className='size-4' />
+      <h1 className='text-sm'>Register</h1>
     </Link>
   )
 }
@@ -29,8 +29,8 @@ const Register = () => {
 const Login = () => {
   return (
     <Link href="/login" className='flex items-center gap-2 h-9 px-4 py-2 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
-      <EnterIcon className='size-5' />
-      <h1 className='text-lg pb-1'>Login</h1>
+      <EnterIcon className='size-4' />
+      <h1 className='text-sm'>Login</h1>
     </Link>
   )
 }
