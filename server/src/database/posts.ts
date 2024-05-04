@@ -49,3 +49,17 @@ export const createDislikesTable = async () => {
     throw error;
   }
 }
+
+export const createTagsTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS tags (
+          id SERIAL PRIMARY KEY,
+          post_id INTEGER NOT NULL REFERENCES posts(id)
+      )
+    `)
+  } catch (error) {
+      console.error("Error creating tags table.", error);
+      throw error;
+  }
+}

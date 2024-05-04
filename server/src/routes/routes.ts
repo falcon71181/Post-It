@@ -7,7 +7,6 @@ import cors from '@fastify/cors'
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
 const routes = async (app: FastifyInstance) => {
-
   // Express middlewares
   await app.register(fastifyExpress);
   await app.register(cors, {
@@ -25,10 +24,7 @@ const routes = async (app: FastifyInstance) => {
     res.status(200).send();
   })
 
-  // Admins routes 
   app.register(admin_routes, { prefix: "/admin" });
-
-  // Users routes 
   app.register(user_routes, { prefix: "/users" });
   app.register(postRoutes, { prefix: '/posts' });
 }
