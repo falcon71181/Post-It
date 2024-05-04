@@ -1,11 +1,12 @@
 import type { FastifyInstance } from "fastify";
-import { createPost, getAllPosts, getPost } from "../controllers/posts.controller";
+import { createPost, deletePost, getAllPosts, getPost } from "../controllers/posts.controller";
 import { isAuth } from "../middlewares/authReq";
 
 const postRoutes = async (app: FastifyInstance) => {
     app.get('/', getAllPosts);
     app.post('/', { preHandler: isAuth }, createPost);
     app.get('/:postId', getPost);
+    app.delete('/:postId', { preHandler: isAuth }, deletePost);
 
     // TODO: Get these done soon
     // app.delete('/:postId', () => {}) // Delete 'postId' post

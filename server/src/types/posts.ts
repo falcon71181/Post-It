@@ -24,8 +24,15 @@ type GetPostReq = {
     }
 }
 
+type DeletePostReq = {
+    Params: {
+        postId: string
+    }
+} & RouteGenericInterface
+
 export type {
     PostType,
     CreatePostReq,
-    GetPostReq
+    GetPostReq,
+    DeletePostReq
 };
