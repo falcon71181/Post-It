@@ -23,12 +23,10 @@ const initializeAvatarTable = async (): Promise<void> => {
 }
 
 const initializeTables = async (): Promise<void> => {
-  try {
-    await initializeAvatarTable();
-    await createUserTable();
-  } catch (error) {
-
-  }
+  await initializeAvatarTable();
+  await createUserTable();
+  // NOTE: Check if there is a need to add
+  // posts related tables or not?
 }
 
 export { defaultAvatarUrl, initializeTables };
