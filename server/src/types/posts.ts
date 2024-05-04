@@ -1,3 +1,5 @@
+import type { RouteGenericInterface } from "fastify";
+
 type PostType = {
     // id: string
     title: string;
@@ -14,7 +16,7 @@ type CreatePostReq = {
         title: string;
         body: string;
     }
-}
+} & RouteGenericInterface;
 
 type GetPostReq = {
     Params: {
