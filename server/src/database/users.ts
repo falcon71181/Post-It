@@ -11,9 +11,8 @@ export const createUserTable = async (): Promise<void> => {
         last_name VARCHAR(50),
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
-        registered_on TIMESTAMPTZ NOT NULL,
-        avatar_id INT DEFAULT 1,
-        FOREIGN KEY (avatar_id) REFERENCES avatars(id)
+        registered_on TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        avatar_id INTEGER NOT NULL REFERENCES avatars(id) DEFAULT 1
       )
     `);
   } catch (error) {

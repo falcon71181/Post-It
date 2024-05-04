@@ -47,7 +47,7 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
 
     // hash the password
     const hashedPassword: string = await hash(password, 12) as string;
-    await pool.query("INSERT INTO users (username, first_name, middle_name, last_name, email, password, registered_on) VALUES ($1, $2, $3, $4, $5, $6, $7)", [username as string, first_name as string, middle_name as string, last_name as string, email as string, hashedPassword as string, new Date()]);
+    await pool.query("INSERT INTO users (username, first_name, middle_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5, $6)", [username as string, first_name as string, middle_name as string, last_name as string, email as string, hashedPassword as string]);
 
     const token: string = createToken(email, username);
     // Send success response
