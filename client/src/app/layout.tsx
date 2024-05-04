@@ -37,7 +37,7 @@ export default function RootLayout({
           >
             <AuthContextProvider>
               <NavBar />
-              <div className="flex-grow">{children}</div>
+              <div className="grow">{children}</div>
             </AuthContextProvider>
             <Background />
           </ThemeProvider>
