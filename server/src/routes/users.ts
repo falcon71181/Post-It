@@ -7,8 +7,8 @@ const routes = async (app: FastifyInstance) => {
   app.post('/login', loginUser);
 
   //INFO: validate user's hwt token
-  app.get('/validate', { preHandler: isAuth }, (_req: FastifyRequest, res: FastifyReply) => {
-    res.status(200).send();
+  app.get('/validate', { preHandler: isAuth }, (req: FastifyRequest, res: FastifyReply) => {
+    res.status(200).send({ admin: req.isAdmin });
   });
 }
 
