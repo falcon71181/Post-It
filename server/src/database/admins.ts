@@ -5,7 +5,7 @@ export const createAdminTable = async (): Promise<void> => {
     await pool.query(`
                   CREATE TABLE IF NOT EXISTS admins (
                     id SERIAL PRIMARY KEY,
-                    email VARCHAR(100) UNIQUE NOT NULL,
+                    email VARCHAR(100) UNIQUE NOT NULL
                   )
                   `);
   } catch (error) {

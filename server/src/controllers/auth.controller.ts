@@ -1,10 +1,10 @@
 import { pool } from "../database/db";
-import { createUserTable } from "../database/users";
 import { compare, hash } from "bcrypt";
 import { createToken } from "../lib/token";
 import type { FastifyRequest, FastifyReply } from "fastify";
 import type { LoginUserConfig, RegisterUserConfig } from "../types/auth";
 import type { QueryResult } from "pg";
+
 
 // register an user
 // TODO: add strong password checker
@@ -38,8 +38,6 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
       return res.status(400).send({ error: "Passwords do not match." });
     }
 
-    // Ensure the "users" table exists
-    await createUserTable();
     // Check if user already exists
     const existingUser_with_email: QueryResult = await pool.query("SELECT * FROM users WHERE email = $1", [email as string]);
     const existingUser_with_username: QueryResult = await pool.query("SELECT * FROM users WHERE username = $1", [username as string]);
@@ -77,7 +75,6 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
     const userAttr = username ? 'username' : 'email';
     const userAttrValue = username ? username : email as string;
 
-    await createUserTable();
     const result = await pool.query(
       `SELECT username, email, password FROM users WHERE ${userAttr} = $1`,
       [userAttrValue]
