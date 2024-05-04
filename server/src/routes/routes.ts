@@ -1,3 +1,4 @@
+import postRoutes from "./posts";
 import { user_routes } from "./users";
 import { admin_routes } from "./admins";
 import { fastifyExpress } from "@fastify/express";
@@ -29,6 +30,7 @@ const routes = async (app: FastifyInstance) => {
 
   // Users routes 
   app.register(user_routes, { prefix: "/users" });
+  app.register(postRoutes, { prefix: '/posts' });
 }
 
 export default routes;
