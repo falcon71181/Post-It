@@ -6,7 +6,7 @@ type PostType = {
     body: string;
     likes: string;
     dislikes: string;
-    user_id: string;
+    username: string;
     // created_on: string;
     // updated_on: string;
 }
