@@ -1,5 +1,7 @@
 import { createAvatarTable } from "../database/avatars";
 import { createUserTable } from "../database/users";
+import { createPostsTable } from "../database/posts";
+import { createAdminTable } from "../database/admins";
 import { pool } from "../database/db";
 import type { QueryResult } from "pg";
 
@@ -23,8 +25,10 @@ const initializeAvatarTable = async (): Promise<void> => {
 }
 
 const initializeTables = async (): Promise<void> => {
+  await createAdminTable();
   await initializeAvatarTable();
   await createUserTable();
+  await createPostsTable();
   // NOTE: Check if there is a need to add
   // posts related tables or not?
 }

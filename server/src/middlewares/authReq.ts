@@ -3,8 +3,6 @@ import type { JwtPayload } from "../lib/token";
 import { pool } from "../database/db";
 import type { QueryResult } from "pg";
 import type { FastifyInstance, FastifyRequest, FastifyReply, preHandlerAsyncHookHandler } from "fastify";
-import { createUserTable } from "../database/users";
-import { createAdminTable } from "../database/admins";
 
 // Secret key for JWT signing
 const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
@@ -36,9 +34,6 @@ export const isAuth: preHandlerAsyncHookHandler = async (
 
     // Extract email from JWT payload
     const { email, username } = payload;
-
-    await createUserTable();
-    await createAdminTable();
 
     // Query database to check if user is admin or not
     const admin: QueryResult = await pool.query(
