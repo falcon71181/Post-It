@@ -1,4 +1,4 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import type { FastifyRequest, FastifyReply } from "fastify";
 import { pool } from "../database/db";
 import { createPostsTable } from "../database/posts";
 import type { QueryResult } from "pg";
@@ -7,6 +7,7 @@ import type {
     GetPostReq,
     PostType
 } from "../types/posts";
+import { createUserTable } from "../database/users";
 
 const getAllPosts = async (_req: FastifyRequest, res: FastifyReply) => {
     try {
@@ -36,7 +37,7 @@ const getPost = async (req: FastifyRequest<GetPostReq>, res: FastifyReply) => {
         await createPostsTable();
         const result: QueryResult<PostType> = await pool.query(`
             SELECT title, body, likes, dislikes, user_id 
-            FROM posts 
+            FROM posts
             WHERE id = $1
         `, [postId]);
 
@@ -56,17 +57,32 @@ const getPost = async (req: FastifyRequest<GetPostReq>, res: FastifyReply) => {
 
 const createPost = async (req: FastifyRequest<CreatePostReq>, res: FastifyReply) => {
     const { title, body } = req.body;
-    const { userId } = req.headers; // TODO: Need middleware for this to work
+    const username = req.username;
 
     try {
+        await createUserTable();
+        const userResult: QueryResult<{ id: string }> = await pool.query(`
+            SELECT id
+            FROM users
+            WHERE username = $1
+        `, [username])
+
+        const userId = userResult.rows[0].id;
+
+        // NOTE: Check if this is needed or not
+        if (!userId) {
+            const error = 'User does not exist.'
+            return res.status(404).send({ error });
+        }
+
         await createPostsTable();
-        const result: QueryResult<PostType> = await pool.query(`
+        const postResult: QueryResult<PostType> = await pool.query(`
             INSERT INTO posts (title, body, user_id) 
             VALUES ($1, $2, $3) 
             RETURNING title, body, likes, dislikes, user_id
         `, [title, body, userId]);
 
-        const newPost = result.rows[0];
+        const newPost = postResult.rows[0];
 
         res.send(newPost);
     } catch (error) {
