@@ -9,7 +9,20 @@ export type RegisterUserConfig = {
 }
 
 export type LoginUserConfig = {
-    username?: string;
-    email?: string;
-    password: string;
+  username?: string;
+  email?: string;
+  password: string;
+}
+
+export type LoginResponseType = {
+  message: string;
+  username: string;
+  email: string;
+  token: string;
+}
+
+export type RegisterResponseType = LoginResponseType;
+
+export type ErrorResponseType = {
+  error: string;
 }

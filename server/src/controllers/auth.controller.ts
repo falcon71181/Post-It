@@ -2,13 +2,35 @@ import { pool } from "../database/db";
 import { compare, hash } from "bcrypt";
 import { createToken } from "../lib/token";
 import type { FastifyRequest, FastifyReply } from "fastify";
-import type { LoginUserConfig, RegisterUserConfig } from "../types/auth";
 import type { QueryResult } from "pg";
+import type { UserDataType } from "../types/user";
+import type { LoginUserConfig, RegisterUserConfig, LoginResponseType, RegisterResponseType, ErrorResponseType } from "../types/auth";
 
+// getUserData
+const getUserData = async (req: FastifyRequest, res: FastifyReply): Promise<UserDataType | ErrorResponseType> => {
+  try {
+    const email = req.email as string;
+    const username = req.username as string;
+
+    const userData: QueryResult = await pool.query("SELECT username, first_name, middle_name, last_name, email, registered_on FROM users WHERE email = $1 AND username = $2", [email as string, username as string]);
+
+    if (userData.rows.length === 0) {
+      return res.status(402).send({ error: "Unauthorized Access." });
+    }
+
+    const userObj: UserDataType = {
+      admin: req.isAdmin ?? false,
+      ...userData.rows[0]
+    }
+
+    return res.send(userObj);
+  } catch (error) {
+    return res.status(500).send({ error: "Internal Server Error" });
+  }
+}
 
 // register an user
-// TODO: add strong password checker
-const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply) => {
+const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply): Promise<RegisterResponseType | ErrorResponseType> => {
   try {
 
     let { username, first_name, middle_name, last_name, email, password, confirmPassword }: RegisterUserConfig = req.body;
@@ -55,19 +77,22 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
     await pool.query("INSERT INTO users (username, first_name, middle_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5, $6)", [username as string, first_name as string, middle_name as string, last_name as string, email as string, hashedPassword as string]);
 
     const token: string = createToken(email, username);
-    // Send success response
-    res.status(200).send({
+
+    const response: RegisterResponseType = {
       message: "User registered successfully.",
       username: username as string,
+      email: email as string,
       token: token as string
-    });
+    }
+    // Send success response
+    return res.status(200).send(response);
 
   } catch (error) {
-    res.status(500).send({ error: "Internal Server Error" });
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 }
 
-const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: FastifyReply) => {
+const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: FastifyReply): Promise<LoginResponseType | ErrorResponseType> => {
   const { username, email, password } = req.body;
 
   if (!username && !email) {
@@ -107,9 +132,9 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
       token: token as string,
     }
 
-    res.send({ response });
+    return res.send({ response });
   } catch (error) {
-    res.status(500).send({ error: "Internal Server Error" });
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 }
 
@@ -129,4 +154,4 @@ const validateEmail = (email: string): boolean => {
   return re.test(String(email).toLowerCase());
 };
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, getUserData };
