@@ -1,4 +1,4 @@
-export type RegisterUserConfig = {
+type RegisterUserConfig = {
   username: string;
   first_name: string;
   middle_name: string | null;
@@ -8,21 +8,23 @@ export type RegisterUserConfig = {
   confirmPassword: string;
 }
 
-export type LoginUserConfig = {
+type LoginUserConfig = {
   username?: string;
   email?: string;
   password: string;
 }
 
-export type LoginResponseType = {
+type LoginResponseType = {
   message: string;
   username: string;
   email: string;
   token: string;
 }
 
-export type RegisterResponseType = LoginResponseType;
+type RegisterResponseType = LoginResponseType;
 
-export type ErrorResponseType = {
+type ErrorResponseType = {
   error: string;
 }
+
+export type { RegisterUserConfig, LoginUserConfig, RegisterResponseType, LoginResponseType, ErrorResponseType };

@@ -1,6 +1,6 @@
-export type UserBadges = string[];
+type UserBadges = string[];
 
-export type UserDataType = {
+type UserDataType = {
   username: string;
   first_name: string;
   middle_name: string;
@@ -9,3 +9,5 @@ export type UserDataType = {
   registered_on: Date;
   admin: boolean;
 }
+
+export type { UserDataType, UserBadges };
