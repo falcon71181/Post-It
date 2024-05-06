@@ -9,7 +9,7 @@ const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
 
 // Middleware function to authenticate requests
 export const isAuth: preHandlerAsyncHookHandler = async (
-  req: FastifyRequest & { email?: string, username?: string, isAdmin?: boolean }, // Attaching email to req object for next middleware or req handler
+  req: FastifyRequest,
   res: FastifyReply,
 ) => {
   try {
