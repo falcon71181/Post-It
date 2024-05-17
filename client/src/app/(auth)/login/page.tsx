@@ -14,7 +14,7 @@ const Login = () => {
     const [loginVia, setLoginVia] = useState(false);
     const [state, formAction] = useFormState(loginUser, initialState);
     const { pending } = useFormStatus();
-    
+
     console.log(state);
 
     return (
@@ -52,7 +52,7 @@ const Login = () => {
                     >
                         {pending ? 'Loading...' : 'Login Into Account'}
                     </button>
-                    {state.error && <div className="absolute left-1/2 top-[112%] -translate-x-1/2 text-red-500 font-sm">{state.error}</div>}
+                    {state.error && <div className="absolute w-full text-center left-1/2 top-[112%] -translate-x-1/2 text-red-500 font-sm">{state.error}</div>}
                 </form>
             </div>
         </div>
