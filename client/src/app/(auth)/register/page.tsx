@@ -16,15 +16,7 @@ const Register = () => {
 
   const handleRegisteration = async (_preState: any, formData: FormData) => {
     try {
-      const userData: RegisterUser = {
-        email: formData.get("email") as string,
-        username: formData.get("username") as string,
-        first_name: formData.get("first_name") as string,
-        middle_name: formData.get("middle_name") as string,
-        last_name: formData.get("last_name") as string,
-        password: formData.get("password") as string,
-        confirmPassword: formData.get("confirmPassword") as string,
-      }
+
       const response = await fetch(`${SERVER}/users/register`, {
         method: "POST",
         body: JSON.stringify(userData),
