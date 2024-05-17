@@ -9,9 +9,9 @@ type LoginUser = {
 type RegisterUser = {
     email: string;
     username: string;
-    first_name: string;
-    middle_name?: string;
-    last_name?: string;
+    firstName: string;
+    middleName?: string;
+    lastName?: string;
     password: string;
     confirmPassword: string;
 }

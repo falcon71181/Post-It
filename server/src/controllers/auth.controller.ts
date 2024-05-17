@@ -6,7 +6,6 @@ import type { QueryResult } from "pg";
 import type { UserDataType } from "../types/user";
 import type { LoginUserConfig, RegisterUserConfig, LoginResponseType, RegisterResponseType, ErrorResponseType } from "../types/auth";
 
-// getUserData
 const getUserData = async (req: FastifyRequest, res: FastifyReply): Promise<UserDataType | ErrorResponseType> => {
     try {
         const email = req.email as string;
@@ -32,6 +31,7 @@ const getUserData = async (req: FastifyRequest, res: FastifyReply): Promise<User
 // register an user
 const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, res: FastifyReply): Promise<RegisterResponseType | ErrorResponseType> => {
     try {
+        // TODO: Refactor/style some stuff here
         let { username, firstName, middleName, lastName, email, password, confirmPassword }: RegisterUserConfig = req.body;
 
         // check if any field is missing
@@ -65,18 +65,30 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
         }
 
         // Check if user already exists
-        const existingUserWithEmail: QueryResult = await pool.query("SELECT * FROM users WHERE email = $1", [email as string]);
-        const existingUserWithUsername: QueryResult = await pool.query("SELECT * FROM users WHERE username = $1", [username as string]);
+        const existingUserWithEmail: QueryResult<{ email: string }> = await pool.query(
+            "SELECT email FROM users WHERE email = $1",
+            [email as string]
+        );
+
+        const existingUserWithUsername: QueryResult<{ username: string }> = await pool.query(
+            "SELECT username FROM users WHERE username = $1",
+            [username as string]
+        );
+
         if (existingUserWithEmail.rows.length > 0 || existingUserWithUsername.rows.length > 0) {
             return res.status(409).send({ error: "User already exists." });
         }
 
-        // hash the password
+        // Hash the password
         const hashedPassword: string = await hash(password, 12) as string;
-        await pool.query("INSERT INTO users (username, firstName, middleName, lastName, email, password) VALUES ($1, $2, $3, $4, $5, $6)", [username as string, firstName as string, middleName as string, lastName as string, email as string, hashedPassword as string]);
+
+        await pool.query(
+            "INSERT INTO users (username, first_name, middle_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5, $6)",
+            [username as string, firstName as string, middleName as string, lastName as string, email as string, hashedPassword as string]
+        );
 
         const token: string = createToken(email, username);
-        // Send success response
+
         res.status(200).send({
             message: "User registered successfully.",
             username: username as string,
@@ -91,8 +103,8 @@ const registerUser = async (req: FastifyRequest<{ Body: RegisterUserConfig }>, r
         }
 
         return res.status(200).send(response);
-
     } catch (error) {
+        if (error instanceof Error) console.error(error.message);
         return res.status(500).send({ error: "Internal Server Error" });
     }
 }
@@ -110,11 +122,11 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
         const userAttr = username ? 'username' : 'email';
         const userAttrValue = username ? username : email as string;
 
-        const result = await pool.query(
+        const result: QueryResult<{ username: string, email: string, password: string }> = await pool.query(
             `SELECT username, email, password FROM users WHERE ${userAttr} = $1`,
             [userAttrValue as string]
         );
-        const user: { username: string, email: string, password: string } | undefined = result.rows[0];
+        const user = result.rows[0];
 
         if (!user) {
             const error = "User not found.";
@@ -139,6 +151,7 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
 
         return res.send(response);
     } catch (error) {
+        if (error instanceof Error) console.error(error.message);
         return res.status(500).send({ error: "Internal Server Error" });
     }
 }
