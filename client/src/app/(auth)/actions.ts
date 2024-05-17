@@ -39,6 +39,7 @@ const registerUser = async (_prevState: any, formData: FormData) => {
         if (res.ok) {
             newState.user = {
                 username: data.username,
+                email: data.email,
                 token: data.token
             }
         }
@@ -84,6 +85,7 @@ const loginUser = async (_prevState: any, formData: FormData) => {
         if (res.ok) {
             newState.user = {
                 username: data.username,
+                email: data.email,
                 token: data.token
             }
         }
