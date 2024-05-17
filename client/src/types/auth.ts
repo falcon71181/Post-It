@@ -18,7 +18,7 @@ type RegisterUser = {
 
 type AuthUser = {
     username: string;
-    // email: string;
+    email: string;
     token: string;
 }
 
