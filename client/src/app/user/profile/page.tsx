@@ -1,8 +1,29 @@
 'use client'
 import { useState, useEffect } from "react";
 import type { UserDataType } from "@/types/auth";
+import { getPersonalDetails } from "@/lib/getUserData";
 
+type ResponseErrorType = {
+  error: string;
+}
 const Profile = () => {
+  const [responseError, setResponseError] = useState<ResponseErrorType | null>(null);
+  const SERVER = process.env.NEXT_PUBLIC_SERVER;
+  const [userData, setUserData] = useState<UserDataType | null>(null);
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const data = await getPersonalDetails();
+        if (data) {
+          setUserData(data);
+        }
+      }
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [])
 
   return (
     <div className="p-5 flex flex-col items-center gap-3 md:gap-5 border border-red-300">
@@ -11,37 +32,14 @@ const Profile = () => {
       </div>
       <div className="w-full flex flex-row-reverse">
         <h1 className="border border-red-300 grow">Change Avator</h1>
-        <ProfileUpdateForm />
+        <ProfileUpdateForm userData={userData} responseError={responseError} />
       </div>
     </div>
   )
 }
 
-const ProfileUpdateForm = () => {
-  type ResponseErrorType = {
-    error: string;
-  }
-  const SERVER = process.env.NEXT_PUBLIC_SERVER;
+const ProfileUpdateForm = ({ userData, responseError }: { userData: UserDataType | null, responseError: ResponseErrorType | null }) => {
   const [toggleChangePassword, setToggleChangePassword] = useState<boolean>(false);
-  const [responseError, setResponseError] = useState<ResponseErrorType | null>(null);
-  const [userData, setUserData] = useState<UserDataType | null>(null);
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const response = await fetch(`${SERVER}/users`);
-        const data = await response.json();
-        if (!response.ok) {
-          setResponseError(data);
-          return;
-        }
-        setUserData(data as UserDataType);
-      }
-      fetchData();
-    } catch (error) {
-      console.error(error);
-    }
-  })
   return (
     <div className="flex flex-col gap-2 w-full sm:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-7/12 p-5 bg-background border border-border transition-all duration-500">
       <h1 className="font-semibold text-2xl md:text-3xl transition-all duration-500">Edit Profile</h1>
@@ -100,7 +98,7 @@ const ProfileUpdateForm = () => {
           type="password"
           id="current_password"
           className="cursostatus in the range 200-299) orr-not-allowed col-span-3 bg-background border border-border text-gray-900 text-sm rounded-sm block w-full px-2 py-1 dark:placeholder-gray-400 dark:text-white"
-          placeholder={(new Date()).toLocaleString()}
+          placeholder={userData?.registered_on.toLocaleString() || ""}
           readOnly
         />
         <h1 className="pl-2 tracking-wide text-xs md:text-sm dark:text-cyan-500 dark:hover:text-cyan-500/80 font-semibold col-span-3 cursor-pointer"
