@@ -75,7 +75,7 @@ const GlobalChat = () => {
   }, [])
 
   return (
-    <section className="relative w-full h-[calc(100vh-3.5rem)]">
+    <section className="relative w-full h-full">
       {isConnected && (
         <MessageLogs messages={messagelogs} />
       )}

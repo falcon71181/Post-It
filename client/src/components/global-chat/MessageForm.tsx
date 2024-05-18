@@ -19,7 +19,7 @@ const MessageForm = ({ message, setMessage, handleSendMessage }: MessageFormProp
   };
 
   return (
-    <form className="absolute bottom-0 w-full h-14 pb-3 flex gap-2 items-center" onSubmit={handleSubmit}>
+    <form className="absolute inset-x-0 w-full h-14 pb-3 flex gap-2 items-center" onSubmit={handleSubmit}>
       <input
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-neutral-950 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
         value={message}

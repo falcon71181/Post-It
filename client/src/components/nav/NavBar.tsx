@@ -2,7 +2,7 @@
 
 import { ThemeToggle } from '../theme/ThemeToggler';
 import Link from 'next/link';
-import { AvatarIcon, EnterIcon, PersonIcon, GitHubLogoIcon } from '@radix-ui/react-icons';
+import { AvatarIcon, EnterIcon, PersonIcon, GitHubLogoIcon, GlobeIcon } from '@radix-ui/react-icons';
 import { useAuthContext } from '@/contexts/auth';
 import { AuthUser as AuthUserType } from '@/types/auth';
 
@@ -10,9 +10,13 @@ const NavBar = () => {
   const { authUser, setAuthUser } = useAuthContext();
 
   return (
-    <div className='w-full max-h-20 mb-3 px-3 py-2 backdrop-blur flex justify-between rounded-b-lg items-center border-b-2 border-muted'>
-      <section className='flex items-center gap-2'>
-        <Link href="/" className='text-2xl font-extrabold font-caveat tracking-widest select-none'>Post - It</Link>
+    <div className='w-full h-14 mb-3 px-3 py-2 backdrop-blur flex justify-between rounded-b-lg items-center border-b-2 border-muted'>
+      <section className='flex items-center gap-2 h-full'>
+        <Link href="/" className='mr-5 text-2xl font-extrabold font-caveat tracking-widest select-none'>Post - It</Link>
+        <Link href="/global" className='h-full text-sm font-extrabold font-caveat tracking-widest select-none flex gap-2 items-center justify-center px-2 rounded-md bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
+          <GlobeIcon />
+          <h1>Chat</h1>
+        </Link>
       </section>
       <section className='flex items-center gap-2'>
         <Github />
@@ -58,7 +62,7 @@ const Login = () => {
 
 const AuthUser = ({ authUser }: { authUser: AuthUserType }) => {
   return (
-    <Link href="/login" className='flex items-center gap-2 h-9 px-4 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
+    <Link href="/user/profile" className='flex items-center gap-2 h-9 px-4 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
       <PersonIcon className='size-4 my-auto' />
       <h1 className='text-sm my-auto'>{authUser.username}</h1>
     </Link>
