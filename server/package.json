@@ -20,8 +20,10 @@
     "@fastify/express": "^3.0.0",
     "bcrypt": "^5.1.1",
     "fastify": "^4.26.2",
+    "fastify-socket.io": "^5.0.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.5",
+    "socket.io": "^4.7.5",
     "x-xss-protection": "^2.0.0"
   }
 }
