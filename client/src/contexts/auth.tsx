@@ -19,9 +19,15 @@ export function AuthContextProvider({ children }: AuthContextProps) {
       const username = localStorage.getItem('username');
       const token = localStorage.getItem('token');
       const email = localStorage.getItem('email');
-      if (!username && !token && !email) return;
+      if (!username && !token && !email) {
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
+        return;
+      };
 
       const response = await fetch(`${SERVER}/users/validate`, {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
         },
