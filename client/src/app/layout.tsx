@@ -37,7 +37,7 @@ export default function RootLayout({
           >
             <AuthContextProvider>
               <NavBar />
-              <div className="grow">{children}</div>
+              <div className="grow relative">{children}</div>
             </AuthContextProvider>
             <Background />
           </ThemeProvider>
