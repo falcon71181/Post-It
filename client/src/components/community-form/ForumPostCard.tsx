@@ -42,11 +42,11 @@ export function FormPostCard({ PostData }: { PostData: FormPostCardProps }) {
 const LikeDislikeSection = () => {
   return (
     <section className="cursor-pointer dark:bg-neutral-900 flex flex-col rounded-l-2xl">
-      <div className="px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-tl-2xl hover:bg-green-300/30">
+      <div className="px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-tl-2xl hover:bg-green-300/30 transition-colors duration-200">
         <ChevronUpIcon className="dark:text-neutral-300 group-hover/like:text-green-300" />
         <span className="text-xs font-semibold dark:text-neutral-100 group-hover/like:text-neutral-50">1001</span>
       </div>
-      <div className="px-4 group/dislike h-1/2 flex flex-col gap-2 items-center justify-center rounded-bl-2xl hover:bg-red-300/30">
+      <div className="px-4 group/dislike h-1/2 flex flex-col gap-2 items-center justify-center rounded-bl-2xl hover:bg-red-300/30 transition-colors duration-200">
         <ChevronDownIcon className="dark:text-neutral-300 group-hover/dislike:text-red-300" />
         <span className="text-xs font-semibold dark:text-neutral-100 group-hover/dislike:text-neutral-50">1001</span>
       </div>

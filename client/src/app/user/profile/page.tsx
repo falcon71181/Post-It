@@ -26,12 +26,12 @@ const Profile = () => {
   }, [])
 
   return (
-    <div className="p-5 flex flex-col items-center gap-3 md:gap-5 border border-red-300">
-      <div className="relative w-full flex items-center justify-center h-1/6 md:h-[15vh] border border-cyan-300">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-caveat tracking-widest">Hi, falcon</h1>
+    <div className="px-3 flex flex-col items-center gap-2 md:gap-3">
+      <div className="backdrop-blur-sm rounded-xl relative w-full flex items-center justify-center h-1/6 md:h-[12vh]">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-caveat tracking-widest">Hi, {userData?.username}</h1>
       </div>
-      <div className="w-full flex flex-row-reverse">
-        <h1 className="border border-red-300 grow">Change Avator</h1>
+      {}<div className="w-full flex flex-row-reverse justify-center">
+        {/* <h1 className="border border-red-300 grow">Change Avator</h1> */}
         <ProfileUpdateForm userData={userData} responseError={responseError} />
       </div>
     </div>
@@ -97,7 +97,7 @@ const ProfileUpdateForm = ({ userData, responseError }: { userData: UserDataType
         <input
           type="password"
           id="current_password"
-          className="cursostatus in the range 200-299) orr-not-allowed col-span-3 bg-background border border-border text-gray-900 text-sm rounded-sm block w-full px-2 py-1 dark:placeholder-gray-400 dark:text-white"
+          className="cursor-not-allowed col-span-3 bg-background border border-border text-gray-900 text-sm rounded-sm block w-full px-2 py-1 dark:placeholder-gray-400 dark:text-white"
           placeholder={userData?.registered_on.toLocaleString() || ""}
           readOnly
         />
@@ -106,7 +106,7 @@ const ProfileUpdateForm = ({ userData, responseError }: { userData: UserDataType
         >Change Password</h1>
         {/* TODO: Add Animations in toggle */}
         {toggleChangePassword && (
-          <div className="col-span-3">
+          <div className="col-span-3 flex flex-col gap-2">
             <h1 className="text-sm md:text-base dark:text-neutral-300">New Password</h1>
             <input
               type="password"

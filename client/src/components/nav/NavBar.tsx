@@ -2,9 +2,11 @@
 
 import { ThemeToggle } from '../theme/ThemeToggler';
 import Link from 'next/link';
-import { AvatarIcon, EnterIcon, PersonIcon, GitHubLogoIcon, GlobeIcon } from '@radix-ui/react-icons';
+import { AvatarIcon, EnterIcon, ExitIcon, PersonIcon, GitHubLogoIcon, GlobeIcon } from '@radix-ui/react-icons';
 import { useAuthContext } from '@/contexts/auth';
+import { useRouter } from 'next/navigation';
 import { AuthUser as AuthUserType } from '@/types/auth';
+import { Dispatch, SetStateAction } from 'react';
 
 const NavBar = () => {
   const { authUser, setAuthUser } = useAuthContext();
@@ -22,7 +24,10 @@ const NavBar = () => {
         <Github />
         <ThemeToggle />
         {authUser ? (
-          <AuthUser authUser={authUser} />
+          <div className='flex items-center justify-center gap-1'>
+            <AuthUser authUser={authUser} />
+            <Logout setAuthUser={setAuthUser} />
+          </div>
         ) : (
           <div className='flex items-center justify-center gap-1'>
             <Login />
@@ -64,8 +69,24 @@ const AuthUser = ({ authUser }: { authUser: AuthUserType }) => {
   return (
     <Link href="/user/profile" className='flex items-center gap-2 h-9 px-4 rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
       <PersonIcon className='size-4 my-auto' />
-      <h1 className='text-sm my-auto'>{authUser.username}</h1>
+      <h1 className='text-sm my-auto'>{authUser?.username}</h1>
     </Link>
+  )
+}
+
+const Logout = ({ setAuthUser }: { setAuthUser: Dispatch<SetStateAction<AuthUserType>> }) => {
+  const router = useRouter();
+
+  const handleLogOut = () => {
+    localStorage.clear();
+    setAuthUser(null);
+    router.push("/login")
+  }
+
+  return (
+    <div className='flex items-center gap-2 h-9 px-2 cursor-pointer rounded-md border border-input bg-background shadow-sm hover:bg-red-400 hover:text-accent-foreground' onClick={handleLogOut}>
+      <ExitIcon className='size-4 my-auto' />
+    </div>
   )
 }
 
