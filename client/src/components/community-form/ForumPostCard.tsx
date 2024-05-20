@@ -2,13 +2,10 @@
 
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
 import { ChevronUpIcon, ChevronDownIcon, PersonIcon } from "@radix-ui/react-icons";
+import { PostDataType } from "@/types/posts";
+import Link from "next/link";
 
-type FormPostCardProps = {
-  title: string,
-  description: string
-}
-
-export function FormPostCard({ PostData }: { PostData: FormPostCardProps }) {
+export function FormPostCard({ PostData }: { PostData: PostDataType }) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -32,41 +29,42 @@ export function FormPostCard({ PostData }: { PostData: FormPostCardProps }) {
         }}
       />
       <div className="h-full relative flex rounded-md border border-white/10 rounded-l-2xl">
-        <LikeDislikeSection />
+        <LikeDislikeSection likes={PostData.likes} dislikes={PostData.dislikes} />
         <PostSection PostData={PostData} />
       </div>
     </div>
   );
 }
 
-const LikeDislikeSection = () => {
+const LikeDislikeSection = ({ likes, dislikes }: { likes: number, dislikes: number }) => {
   return (
     <section className="cursor-pointer dark:bg-neutral-900 flex flex-col rounded-l-2xl">
       <div className="px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-tl-2xl hover:bg-green-300/30 transition-colors duration-200">
         <ChevronUpIcon className="dark:text-neutral-300 group-hover/like:text-green-300" />
-        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/like:text-neutral-50">1001</span>
+        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/like:text-neutral-50">{likes}</span>
       </div>
       <div className="px-4 group/dislike h-1/2 flex flex-col gap-2 items-center justify-center rounded-bl-2xl hover:bg-red-300/30 transition-colors duration-200">
         <ChevronDownIcon className="dark:text-neutral-300 group-hover/dislike:text-red-300" />
-        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/dislike:text-neutral-50">1001</span>
+        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/dislike:text-neutral-50">{dislikes}</span>
       </div>
     </section>
   )
 }
 
-const PostSection = ({ PostData }: { PostData: FormPostCardProps }) => {
+const PostSection = ({ PostData }: { PostData: PostDataType }) => {
   return (
-    <section className="w-full p-3 flex flex-col gap-1 rounded-r-md">
+    // TODO: SQL injection possible | find another way to fetch /post/:page data
+    <Link href={`/post/${PostData.id}`} className="w-full p-3 flex flex-col gap-1 rounded-r-md">
       <div className="h-[20%] flex items-center gap-3 text-xs">
-        <span>#Updates</span>
-        <span>9 days ago</span>
+        {/* TODO: Post tags in future <span>#Updates</span> */}
+        <span>{PostData.created_on.toString()}</span>
       </div>
       <div className="h-[20%] text-lg dark:text-neutral-100 font-semibold line-clamp-1">{PostData.title}</div>
-      <div className="h-[25%] text-sm dark:text-neutral-300 line-clamp-2">{PostData.description}</div>
+      <div className="h-[25%] text-sm dark:text-neutral-300 line-clamp-2">{PostData.body}</div>
       <div className="h-[30%] flex gap-2 items-center">
         <PersonIcon className="dark:text-neutral-100" />
-        <span className="text-sm">username</span>
+        <span className="text-sm">{PostData.leader}</span>
       </div>
-    </section>
+    </Link>
   )
 }

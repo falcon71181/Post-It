@@ -1,24 +1,27 @@
 'use client'
 
-import { Dispatch, useState, SetStateAction } from "react";
+import { Dispatch, useState, useEffect, SetStateAction } from "react";
 import { useAuthContext } from "@/contexts/auth";
 import { FormPostCard } from "@/components/community-form/ForumPostCard";
 import { PlusIcon, Cross2Icon } from "@radix-ui/react-icons";
 import ThreadForm from "@/components/community-form/CreatePostForm";
-
-type FormPostCardProps = {
-  title: string,
-  description: string
-}
-
-const dumy: FormPostCardProps = {
-  title: "dummy title",
-  description: "fdummmy description kffkkfkfk fk",
-}
+import { getPostData } from "./actions";
+import type { PostDataType } from "@/types/posts";
 
 export default function Home() {
   const [toggleCreatePostForum, setToggleCreatePostForum] = useState<boolean>(false);
+  const [postData, setPostData] = useState<PostDataType[] | null>(null);
   const { authUser } = useAuthContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getPostData();
+      if (data) {
+        setPostData(data);
+      }
+    }
+    fetchData();
+  }, [setPostData]);
 
   return (
     <main className="text-2xl p-5 flex justify-center items-center">
@@ -30,7 +33,9 @@ export default function Home() {
           )}
         </div>
         <div className="w-full flex flex-col items-center justify-center">
-          <FormPostCard PostData={dumy} />
+          {postData?.map((post: PostDataType) => (
+            <FormPostCard key={post.leader + post.title} PostData={post} />
+          ))}
         </div>
       </div>
       {toggleCreatePostForum && (

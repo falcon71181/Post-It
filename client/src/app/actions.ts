@@ -1,3 +1,5 @@
+import { PostDataType } from "@/types/posts";
+
 export type PostCreated = {
   post: {
     title: string | null;
@@ -64,4 +66,22 @@ const createPost = async (_prevState: any, formData: FormData) => {
   return newState;
 }
 
-export { createPost };
+const getPostData = async () => {
+  try {
+    const response = await fetch(`${SERVER}/posts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (response.ok) {
+      const data = await response.json();
+      return data as PostDataType[];
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export { createPost, getPostData };
