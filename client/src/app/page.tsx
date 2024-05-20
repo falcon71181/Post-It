@@ -32,7 +32,7 @@ export default function Home() {
             <CreatePost dailogState={toggleCreatePostForum} setDailog={setToggleCreatePostForum} />
           )}
         </div>
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col items-center justify-center gap-3">
           {postData?.map((post: PostDataType) => (
             <FormPostCard key={post.leader + post.title} PostData={post} />
           ))}

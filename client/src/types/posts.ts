@@ -9,4 +9,8 @@ type PostDataType = {
   updated_on: Date;
 }
 
-export type { PostDataType };
+type IndividualPostDataType = PostDataType & {
+  replies?: string[] // xxx: for now
+}
+
+export type { PostDataType, IndividualPostDataType };

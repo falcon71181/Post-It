@@ -35,7 +35,7 @@ const getPost = async (req: FastifyRequest<GetPostReq>, res: FastifyReply) => {
 
   try {
     const result: QueryResult<PostType> = await pool.query(`
-            SELECT posts.title, posts.body, posts.likes, posts.dislikes, users.username as leader
+            SELECT posts.id, posts.title, posts.body, posts.likes, posts.dislikes, posts.created_on, posts.updated_on, users.username as leader
             FROM posts
             JOIN users
             ON posts.user_id = users.id
