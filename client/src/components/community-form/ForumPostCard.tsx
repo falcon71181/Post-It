@@ -1,7 +1,7 @@
 "use client";
 
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
-import { ChevronUpIcon, ChevronDownIcon, PersonIcon } from "@radix-ui/react-icons";
+import { ChevronUpIcon, ChevronDownIcon, PersonIcon, ChatBubbleIcon } from "@radix-ui/react-icons";
 import { PostDataType } from "@/types/posts";
 import Link from "next/link";
 
@@ -52,6 +52,7 @@ const LikeDislikeSection = ({ likes, dislikes }: { likes: number, dislikes: numb
 }
 
 const PostSection = ({ PostData }: { PostData: PostDataType }) => {
+  console.log(PostData.noofreplies);
   return (
     // TODO: SQL injection possible | find another way to fetch /post/:page data
     <Link href={`/post/${PostData.id}`} className="w-full p-3 flex flex-col gap-1 rounded-r-md">
@@ -61,9 +62,15 @@ const PostSection = ({ PostData }: { PostData: PostDataType }) => {
       </div>
       <div className="h-[20%] text-lg dark:text-neutral-100 font-semibold line-clamp-1">{PostData.title}</div>
       <div className="h-[25%] text-sm dark:text-neutral-300 line-clamp-2">{PostData.body}</div>
-      <div className="h-[30%] flex gap-2 items-center">
-        <PersonIcon className="dark:text-neutral-100" />
-        <span className="text-sm">{PostData.leader}</span>
+      <div className="h-[30%] w-full flex gap-2 items-center justify-between">
+        <div className="flex items-center">
+          <PersonIcon className="dark:text-neutral-100" />
+          <span className="text-sm">{PostData.leader}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <ChatBubbleIcon />
+          <span className="text-sm">{PostData.noofreplies}</span>
+        </div>
       </div>
     </Link>
   )
