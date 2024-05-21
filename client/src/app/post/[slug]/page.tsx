@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { createReply, ReplyCreated, createReplyWithPostId } from "./actions";
 import type { IndividualPostDataType, ReplyType } from "@/types/posts";
 import { ArrowDownIcon, ArrowLeftIcon, ArrowUpIcon, PaperPlaneIcon, ChatBubbleIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -35,7 +37,7 @@ const PostPage = ({ params }: { params: { slug: number } }) => {
       <PostCard postData={postData} />
       <PostStatusCard postStatus={{ likes: postData?.post?.likes ?? 0, dislikes: postData?.post?.dislikes ?? 0, noOfReplies: postData?.replies?.length ?? 0 }} replyDialog={{ replyFormState: toggleReplyForm, setReplyForm: setToggleReplyForm }} />
       {toggleReplyForm &&
-        <AddReplyCard />
+        <AddReplyCard postId={params.slug} postData={postData} setRepliesData={setPostData} setToggleReplyForm={setToggleReplyForm} />
       }
       {postData?.replies?.map((reply) => (
         <ReplyCard reply={reply} key={reply.id} />
@@ -86,25 +88,42 @@ const PostStatusCard = ({ postStatus, replyDialog }: { postStatus: { likes: numb
   )
 }
 
-const AddReplyCard = () => {
+const initialState: ReplyCreated = {
+  reply: null,
+  error: null,
+}
+
+const AddReplyCard = ({ postId, postData, setRepliesData, setToggleReplyForm }: { postId: number, postData: IndividualPostDataType | null, setRepliesData: Dispatch<SetStateAction<IndividualPostDataType | null>>, setToggleReplyForm: Dispatch<SetStateAction<boolean>> }) => {
+  const [state, formAction] = useFormState(createReplyWithPostId(postId), initialState);
+  const { pending } = useFormStatus();
+
+  useEffect(() => {
+    if (!pending && state.reply) {
+      const newReply: ReplyType = state.reply;
+      postData?.replies?.reverse().push(newReply);
+      setRepliesData(postData);
+      setToggleReplyForm(false);
+    }
+  }, [state.reply, pending, postData, setRepliesData, setToggleReplyForm])
+
   return (
-    <form id="replyForm">
-      <div className="relative">
-        <textarea
-          rows={6}
-          className="bg-background/70 border border-gray-500 p-2 w-full text-sm rounded-md outline-none focus:border-gray-200 cursor-text"
-        />
-        <button className='absolute right-0 bottom-0 mr-3 mb-4'>
-          <PaperPlaneIcon className="size-5" />
-        </button>
-      </div>
+    <form id="replyForm" className="relative" action={formAction}>
+      <textarea
+        id="body"
+        name="body"
+        rows={6}
+        className="bg-background/70 border border-gray-500 p-2 w-full text-sm rounded-md outline-none focus:border-gray-200 cursor-text"
+      />
+      <button className='absolute right-0 bottom-0 mr-3 mb-4'>
+        <PaperPlaneIcon className="size-5" />
+      </button>
     </form>
   )
 }
 
 const ReplyCard = ({ reply }: { reply: ReplyType }) => {
   return (
-    <div className="w-full min-h-12 p-3 bg-background flex flex-col gap-3 border border-border rounded-lg">
+    <div className="w-full min-h-12 p-3 bg-background flex flex-col gap-3 border border-border rounded-lg hover:border hover:border-l-yellow-500 hover:translate-x-1 transition-all duration-300 ">
       <div className="flex justify-between dark:text-neutral-400 text-gray-800">
         <h1 className="text-base font-caveat tracking-wider">by {reply.leader}</h1>
         <span className="text-xs">{reply.created_on.toLocaleString()}</span>
