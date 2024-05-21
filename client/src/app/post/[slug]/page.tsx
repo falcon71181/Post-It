@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { createReply, ReplyCreated, createReplyWithPostId } from "./actions";
+import { ReplyCreated, createReplyWithPostId } from "./actions";
 import type { IndividualPostDataType, ReplyType } from "@/types/posts";
 import { ArrowDownIcon, ArrowLeftIcon, ArrowUpIcon, PaperPlaneIcon, ChatBubbleIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -103,11 +103,12 @@ const AddReplyCard = ({ postId, postData, setRepliesData, setToggleReplyForm }: 
       postData?.replies?.reverse().push(newReply);
       setRepliesData(postData);
       setToggleReplyForm(false);
+    } else {
     }
   }, [state.reply, pending, postData, setRepliesData, setToggleReplyForm])
 
   return (
-    <form id="replyForm" className="relative" action={formAction}>
+    <form id="replyForm" className="relative flex flex-col gap-2" action={formAction}>
       <textarea
         id="body"
         name="body"
@@ -117,6 +118,9 @@ const AddReplyCard = ({ postId, postData, setRepliesData, setToggleReplyForm }: 
       <button className='absolute right-0 bottom-0 mr-3 mb-4'>
         <PaperPlaneIcon className="size-5" />
       </button>
+      {state.error && (
+        <h1 className="text-red-300 text-sm">Error: {state.error}</h1>
+      )}
     </form>
   )
 }

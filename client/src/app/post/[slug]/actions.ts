@@ -48,7 +48,7 @@ const createReply = async (_prevState: any, formData: FormData, postId: number) 
         likes: 0,
         dislikes: 0,
         leader: localStorage.getItem('username') || "",
-        created_on: new Date(),
+        created_on: new Date().toLocaleString(),
         parent_reply_id: null
       }
     }

@@ -23,6 +23,7 @@ const PostForm = ({ postData, setPostData, setFormDailog }: { postData: PostData
       postData?.reverse().push(newPost);
       setPostData(postData?.reverse() || []);
       setFormDailog(false);
+    } else {
     }
   }, [pending, state.post, setFormDailog, setPostData, postData]);
 
