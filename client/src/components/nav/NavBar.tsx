@@ -2,7 +2,7 @@
 
 import { ThemeToggle } from '../theme/ThemeToggler';
 import Link from 'next/link';
-import { AvatarIcon, EnterIcon, ExitIcon, PersonIcon, GitHubLogoIcon, GlobeIcon } from '@radix-ui/react-icons';
+import { AvatarIcon, EnterIcon, ExitIcon, PersonIcon, GitHubLogoIcon, GlobeIcon, Pencil2Icon } from '@radix-ui/react-icons';
 import { useAuthContext } from '@/contexts/auth';
 import { useRouter } from 'next/navigation';
 import { AuthUser as AuthUserType } from '@/types/auth';
@@ -18,6 +18,10 @@ const NavBar = () => {
         <Link href="/global" className='h-full text-sm font-extrabold font-caveat tracking-widest select-none flex gap-2 items-center justify-center px-2 rounded-md bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
           <GlobeIcon />
           <h1>Chat</h1>
+        </Link>
+        <Link href="/rules" className='h-full text-sm font-extrabold font-caveat tracking-widest select-none flex gap-2 items-center justify-center px-2 rounded-md bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'>
+          <Pencil2Icon />
+          <h1>Rules</h1>
         </Link>
       </section>
       <section className='flex items-center gap-2'>
