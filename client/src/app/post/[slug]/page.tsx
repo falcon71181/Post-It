@@ -33,7 +33,7 @@ const PostPage = ({ params }: { params: { slug: number } }) => {
         <span className="text-lg">Back</span>
       </Link>
       <PostCard postData={postData} />
-      <PostStatusCard postStatus={{ likes: postData?.likes ?? 0, dislikes: postData?.dislikes ?? 0 }} replyDialog={{ replyFormState: toggleReplyForm, setReplyForm: setToggleReplyForm }} />
+      <PostStatusCard postStatus={{ likes: postData?.post?.likes ?? 0, dislikes: postData?.post?.dislikes ?? 0, noOfReplies: postData?.replies?.length ?? 0 }} replyDialog={{ replyFormState: toggleReplyForm, setReplyForm: setToggleReplyForm }} />
       {toggleReplyForm &&
         <AddReplyCard />
       }
@@ -44,19 +44,19 @@ const PostPage = ({ params }: { params: { slug: number } }) => {
 const PostCard = ({ postData }: { postData: IndividualPostDataType | null }) => {
   return (
     <div className="w-full min-h-[20vh] p-3 flex flex-col gap-3 border border-border rounded-md bg-background">
-      <h1 className="text-3xl font-semibold">{postData?.title}</h1>
+      <h1 className="text-3xl font-semibold">{postData?.post?.title}</h1>
       <div className="w-full text-gray-800 dark:text-neutral-400 text-sm flex justify-between items-center">
-        <h1 className="font-caveat tracking-wider">by {postData?.leader}</h1>
-        <h1>on {postData?.created_on.toLocaleString()}</h1>
+        <h1 className="font-caveat tracking-wider">by {postData?.post?.leader}</h1>
+        <h1>on {postData?.post?.created_on.toLocaleString()}</h1>
       </div>
       <p className="text-sm text-150 leading-6">
-        {postData?.body}
+        {postData?.post?.body}
       </p>
     </div>
   )
 }
 
-const PostStatusCard = ({ postStatus, replyDialog }: { postStatus: { likes: number, dislikes: number }, replyDialog: { replyFormState: boolean, setReplyForm: Dispatch<SetStateAction<boolean>> } }) => {
+const PostStatusCard = ({ postStatus, replyDialog }: { postStatus: { likes: number, dislikes: number, noOfReplies: number }, replyDialog: { replyFormState: boolean, setReplyForm: Dispatch<SetStateAction<boolean>> } }) => {
   return (
     <div className="w-full h-12 rounded-md flex justify-between border border-border bg-background">
       <div className="flex">
@@ -77,7 +77,7 @@ const PostStatusCard = ({ postStatus, replyDialog }: { postStatus: { likes: numb
       </div>
       <div className="h-12 px-3 flex gap-2 items-center text-xs rounded-r-md hover:bg-accent cursor-pointer transition-colors duration-200">
         <ChatBubbleIcon />
-        <h1>6969</h1>
+        <h1>{postStatus.noOfReplies}</h1>
       </div>
     </div>
   )

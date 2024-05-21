@@ -21,8 +21,9 @@ type ReplyType = {
   created_on: Date;
 }
 
-type IndividualPostDataType = PostDataType & {
-  replies?: ReplyType[] // xxx: for now
+type IndividualPostDataType = {
+  post: PostDataType;
+  replies?: ReplyType[]; // xxx: for now
 }
 
 export type { PostDataType, IndividualPostDataType };

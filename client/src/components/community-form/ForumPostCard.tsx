@@ -63,7 +63,7 @@ const PostSection = ({ PostData }: { PostData: PostDataType }) => {
       <div className="h-[20%] text-lg dark:text-neutral-100 font-semibold line-clamp-1">{PostData.title}</div>
       <div className="h-[25%] text-sm dark:text-neutral-300 line-clamp-2">{PostData.body}</div>
       <div className="h-[30%] w-full flex gap-2 items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <PersonIcon className="dark:text-neutral-100" />
           <span className="text-sm">{PostData.leader}</span>
         </div>
