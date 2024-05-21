@@ -30,9 +30,21 @@ type DeletePostReq = {
   }
 } & RouteGenericInterface
 
+type CreateReplyReq = {
+  Params: {
+    postId: string;
+  };
+  Body: {
+    body: string;
+  };
+  Username: string;
+  Email: string;
+};
+
 export type {
   PostType,
   CreatePostReq,
   GetPostReq,
-  DeletePostReq
+  DeletePostReq,
+  CreateReplyReq
 };
