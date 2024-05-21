@@ -16,6 +16,16 @@ type RegisterUser = {
   confirmPassword: string;
 }
 
+type UpdateUserProfile = {
+  firstName?: string | null;
+  middleName?: string | null;
+  lastName?: string | null;
+  updated_email?: string;
+  currPassword: string;
+  newPassword?: string;
+  confirmNewPassword?: string;
+}
+
 type AuthUser = {
   username: string;
   email: string;
@@ -42,4 +52,4 @@ type UserDataType = {
   admin: boolean;
 }
 
-export type { UserDataType, LoginUser, RegisterUser, AuthUser, AuthCheck, AuthContextType };
+export type { UserDataType, LoginUser, RegisterUser, AuthUser, AuthCheck, AuthContextType, UpdateUserProfile };

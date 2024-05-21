@@ -34,7 +34,7 @@ const Register = () => {
   }, [state.user, router, setAuthUser]);
 
   return (
-    <div className="px-3 min-h-[80vh] flex justify-center items-center border border-cyan-300">
+    <div className="px-3 min-h-[80vh] flex justify-center items-center">
       <div className="w-full sm:w-11/12 lg:w-10/12 xl:w-9/12 2xl:w-7/12 p-5 flex flex-col gap-2 bg-background border border-border transition-all duration-1000">
         <h1 className="font-semibold text-2xl md:text-3xl transition-all duration-500">Create New Account</h1>
         <h1 className="text-xs md:text-sm text-neutral-400">Enter your valid details to create a new account.</h1>
