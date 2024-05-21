@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { AuthContextProvider } from "@/contexts/auth";
 import NavBar from "@/components/nav/NavBar";
+import Footer from "@/components/foot/Footer";
 import { Background } from "@/components/theme/BackgroundGrid";
 import { Caveat } from 'next/font/google'
 import { cn } from "../lib/utils";
@@ -38,6 +39,8 @@ export default function RootLayout({
             <AuthContextProvider>
               <NavBar />
               <div className="grow relative">{children}</div>
+              <div className='border border-[#242F2B] mb-2'></div>
+              <Footer />
             </AuthContextProvider>
             <Background />
           </ThemeProvider>

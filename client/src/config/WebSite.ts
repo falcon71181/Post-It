@@ -1,4 +1,5 @@
 export const siteName: string = "Post - It";
+export const githubLink: string = "https://github.com/falcon71181/Post-It";
 
 export const getRules = [
   {
