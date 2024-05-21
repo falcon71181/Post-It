@@ -4,7 +4,7 @@ import { createToken } from "../lib/token";
 import type { FastifyRequest, FastifyReply } from "fastify";
 import type { QueryResult } from "pg";
 import type { UserDataType } from "../types/user";
-import type { LoginUserConfig, RegisterUserConfig, LoginResponseType, RegisterResponseType, ErrorResponseType } from "../types/auth";
+import type { LoginUserConfig, RegisterUserConfig, LoginResponseType, RegisterResponseType, ErrorResponseType, UpdateUserProfile } from "../types/auth";
 
 const getUserData = async (req: FastifyRequest, res: FastifyReply): Promise<UserDataType | ErrorResponseType> => {
   try {
@@ -156,6 +156,98 @@ const loginUser = async (req: FastifyRequest<{ Body: LoginUserConfig }>, res: Fa
   }
 }
 
+// update user profile
+const updateProfile = async (req: FastifyRequest<{ Body: UpdateUserProfile }>, res: FastifyReply): Promise<void> => {
+  const email = req.email;
+  const username = req.username;
+  try {
+    // TODO: Refactor/style some stuff here
+    let { firstName, middleName, lastName, updated_email, currPassword, newPassword, confirmNewPassword } = req.body;
+
+    // trim all fields
+    firstName = firstName?.trim() as string;
+    middleName = middleName?.trim() as string || null;
+    lastName = lastName?.trim() as string || null;
+    updated_email = updated_email?.trim() as string;
+    updated_email = String(updated_email).toLowerCase();
+    newPassword = newPassword?.trim() as string;
+    confirmNewPassword = confirmNewPassword?.trim() as string;
+
+    // Check if user exists
+    let existingUser: QueryResult = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username as string],
+    );
+
+    if (validatePassword(newPassword) && (newPassword === confirmNewPassword)) {
+      if (!validatePassword(newPassword as string) || (newPassword.length < 8 || newPassword.length > 50)) {
+        return res.status(403).send({ error: "Password should contains atleast one (special character, uppercase character, lowercase character, number) & character limit is: [8, 50]" })
+      }
+
+      const user = existingUser.rows[0];
+      const isPasswordCorrect: boolean = await compare(currPassword, user.password);
+
+      if (!isPasswordCorrect) {
+        return res.status(401).send({ error: "Incorrect password." });
+      }
+
+      const hashedPassword: string = await hash(newPassword, 12);
+      const update_user_password: QueryResult = await pool.query("UPDATE users SET password = $1 WHERE username = $2", [hashedPassword as string, username as string]);
+
+      if (update_user_password) {
+        return res.status(200).send({
+          message: "Password updated successfully.",
+        })
+      }
+    } else if (typeof (updated_email) === 'string' && email != updated_email && updated_email !== 'undefined') {
+      // Validate email format
+      if (!validateEmail(updated_email as string)) {
+        return res.status(403).send({ error: "Invalid email format." });
+      }
+
+      const user = existingUser.rows[0];
+
+      const isPasswordCorrect: boolean = await compare(currPassword, user.password);
+
+      if (!isPasswordCorrect) {
+        return res.status(401).send({ error: "Incorrect password." });
+      }
+
+      const update_user_email: QueryResult = await pool.query("UPDATE users SET email = $1 WHERE username = $2", [updated_email as string, username as string]);
+
+      if (update_user_email) {
+        const token: string = createToken(updated_email, username);
+        return res.status(200).send({
+          message: "Email updated successfully.",
+          username: user.user_username,
+          email: updated_email,
+          token: token,
+        })
+      }
+    } else if (firstName || middleName || lastName) {
+
+      const user = existingUser.rows[0];
+      if (user.first_name != firstName && firstName !== 'undefined') {
+        await pool.query("UPDATE users SET first_name = $1 WHERE username = $2", [firstName as string, username as string]);
+      } else if (user.middleName != middleName && middleName !== 'undefined') {
+        await pool.query("UPDATE users SET middle_name = $1 WHERE username = $2", [middleName as string, username as string]);
+      } else if (user.lastName != lastName && lastName !== 'undefined') {
+        await pool.query("UPDATE users SET last_name = $1 WHERE username = $2", [lastName as string, username as string]);
+      }
+      return res.status(200).send({
+        message: "Name updated successfully.",
+        username: username,
+      })
+    }
+
+    return res.status(404).send({ error: "Wrong request, Check again." });
+
+  } catch (error) {
+    if (error instanceof Error) console.error(error.message);
+    return res.status(500).send({ error: "Internal Server Error" });
+  }
+}
+
 // Validate password
 function validatePassword(pw: string): boolean {
   return /[A-Z]/.test(pw) &&
@@ -172,4 +264,4 @@ const validateEmail = (email: string): boolean => {
   return re.test(String(email).toLowerCase());
 };
 
-export { registerUser, loginUser, getUserData };
+export { registerUser, loginUser, updateProfile, getUserData };

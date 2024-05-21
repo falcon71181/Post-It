@@ -1,10 +1,11 @@
-import { getUserData, loginUser, registerUser } from "../controllers/auth.controller";
+import { getUserData, loginUser, registerUser, updateProfile } from "../controllers/auth.controller";
 import { isAuth } from "../middlewares/authReq";
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 
 const routes = async (app: FastifyInstance) => {
   app.post('/register', registerUser);
   app.post('/login', loginUser);
+  app.post('/update', { preHandler: isAuth }, updateProfile);
   app.get('/', { preHandler: isAuth }, getUserData);
 
   //INFO: validate user's hwt token
