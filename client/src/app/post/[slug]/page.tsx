@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import type { IndividualPostDataType } from "@/types/posts";
+import type { IndividualPostDataType, ReplyType } from "@/types/posts";
 import { ArrowDownIcon, ArrowLeftIcon, ArrowUpIcon, PaperPlaneIcon, ChatBubbleIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -37,19 +37,22 @@ const PostPage = ({ params }: { params: { slug: number } }) => {
       {toggleReplyForm &&
         <AddReplyCard />
       }
+      {postData?.replies?.map((reply) => (
+        <ReplyCard reply={reply} key={reply.id} />
+      ))}
     </div>
   )
 }
 
 const PostCard = ({ postData }: { postData: IndividualPostDataType | null }) => {
   return (
-    <div className="w-full min-h-[20vh] p-3 flex flex-col gap-3 border border-border rounded-md bg-background">
+    <div className="w-full min-h-[14vh] p-3 flex flex-col gap-3 border dark:border-neutral-500 border-cyan-300 rounded-md bg-background">
       <h1 className="text-3xl font-semibold">{postData?.post?.title}</h1>
       <div className="w-full text-gray-800 dark:text-neutral-400 text-sm flex justify-between items-center">
-        <h1 className="font-caveat tracking-wider">by {postData?.post?.leader}</h1>
+        <h1 className="font-caveat tracking-wider text-base">by {postData?.post?.leader}</h1>
         <h1>on {postData?.post?.created_on.toLocaleString()}</h1>
       </div>
-      <p className="text-sm text-150 leading-6">
+      <p className="text-sm text-150 leading-6 tracking-wide">
         {postData?.post?.body}
       </p>
     </div>
@@ -96,6 +99,20 @@ const AddReplyCard = () => {
         </button>
       </div>
     </form>
+  )
+}
+
+const ReplyCard = ({ reply }: { reply: ReplyType }) => {
+  return (
+    <div className="w-full min-h-12 p-3 bg-background flex flex-col gap-3 border border-border rounded-lg">
+      <div className="flex justify-between dark:text-neutral-400 text-gray-800">
+        <h1 className="text-base font-caveat tracking-wider">by {reply.leader}</h1>
+        <span className="text-xs">{reply.created_on.toLocaleString()}</span>
+      </div>
+      <p className="text-sm text-150 leading-6 tracking-wide">
+        {reply.body}
+      </p>
+    </div>
   )
 }
 

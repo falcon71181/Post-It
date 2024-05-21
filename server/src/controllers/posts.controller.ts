@@ -65,7 +65,10 @@ const getPost = async (req: FastifyRequest<GetPostReq>, res: FastifyReply) => {
         `, [Number(postId)]);
 
     const repliesData: QueryResult = await pool.query(`
-            SELECT * FROM replies WHERE post_id = $1
+            SELECT replies.id, replies.body, replies.likes, replies.dislikes, replies.created_on, replies.parent_reply_id, users.username as leader 
+FROM replies 
+JOIN users ON replies.user_id = users.id 
+WHERE replies.post_id = $1
         `, [Number(postId)]);
 
     const post = result.rows[0];

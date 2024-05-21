@@ -17,7 +17,7 @@ export function FormPostCard({ PostData }: { PostData: PostDataType }) {
         mouseX.set(e.clientX - left);
         mouseY.set(e.clientY - top);
       }}
-      className="group relative h-52 max-w-[900px] w-full overflow-hidden rounded-md bg-neutral-200 dark:bg-neutral-950"
+      className="group relative h-52 max-w-[900px] w-full overflow-hidden rounded-md bg-neutral-200 dark:bg-neutral-950 hover:border hover:border-l-yellow-500 hover:translate-x-1 transition-all duration-300 rounded-l-xl"
     >
       {/* TODO: Style better for light theme */}
       <motion.div

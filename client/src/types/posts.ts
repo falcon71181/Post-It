@@ -12,12 +12,11 @@ type PostDataType = {
 
 type ReplyType = {
   id: number;
-  post_id: number;
   parent_reply_id: number | null;
   body: string;
   likes: number;
   dislikes: number;
-  user_id: number;
+  leader: string;
   created_on: Date;
 }
 
@@ -26,4 +25,4 @@ type IndividualPostDataType = {
   replies?: ReplyType[]; // xxx: for now
 }
 
-export type { PostDataType, IndividualPostDataType };
+export type { ReplyType, PostDataType, IndividualPostDataType };
