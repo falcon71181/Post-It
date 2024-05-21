@@ -39,7 +39,7 @@ export default function Home() {
         </div>
       </div>
       {toggleCreatePostForum && (
-        <CreatePostForum setDailog={setToggleCreatePostForum} />
+        <CreatePostForum postData={postData} setPostData={setPostData} setDailog={setToggleCreatePostForum} />
       )}
     </main>
   );
@@ -54,12 +54,12 @@ const CreatePost = ({ dailogState, setDailog }: { dailogState: boolean, setDailo
   )
 }
 
-const CreatePostForum = ({ setDailog }: { setDailog: Dispatch<SetStateAction<boolean>> }) => {
+const CreatePostForum = ({ postData, setPostData, setDailog }: { postData: PostDataType[] | null, setPostData: Dispatch<SetStateAction<PostDataType[] | null>>, setDailog: Dispatch<SetStateAction<boolean>> }) => {
   return (
     <div className="absolute inset-0 backdrop-blur-md flex justify-center items-center">
       <div className="relative w-7/12 min-h-96 bg-background border border-border rounded-md">
         <Cross2Icon className="absolute top-3 right-3 size-8 hover:text-red-300 cursor-pointer transition-colors duration-150" onClick={() => setDailog(false)} />
-        <ThreadForm />
+        <ThreadForm postData={postData} setPostData={setPostData} setFormDailog={setDailog} />
       </div>
     </div>
   )

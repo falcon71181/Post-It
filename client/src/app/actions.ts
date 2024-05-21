@@ -1,13 +1,7 @@
 import { PostDataType } from "@/types/posts";
 
 export type PostCreated = {
-  post: {
-    title: string | null;
-    body: string | null;
-    likes: number | 0;
-    dislikes: number | 0;
-    leader: string | null;
-  } | null;
+  post: PostDataType | null;
   error: string | null;
 }
 

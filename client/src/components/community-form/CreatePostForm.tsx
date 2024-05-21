@@ -4,15 +4,27 @@ import { useState, useEffect, Dispatch, SetStateAction, FormEvent } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 import { useAuthContext } from "@/contexts/auth"
 import { createPost, PostCreated, CreatePost } from "@/app/actions"
+import type { PostDataType } from "@/types/posts"
 
 const initialState: PostCreated = {
   post: null,
   error: null,
 }
 
-const PostForm = () => {
+const PostForm = ({ postData, setPostData, setFormDailog }: { postData: PostDataType[] | null, setPostData: Dispatch<SetStateAction<PostDataType[] | null>>, setFormDailog: Dispatch<SetStateAction<boolean>> }) => {
   const [state, formAction] = useFormState(createPost, initialState);
   const { pending } = useFormStatus();
+
+  useEffect(() => {
+    if (!pending && state.post) {
+      const newPost: PostDataType = state.post;
+      newPost.created_on = new Date();
+      newPost.leader = localStorage.getItem('username') || "";
+      postData?.reverse().push(newPost);
+      setPostData(postData?.reverse() || []);
+      setFormDailog(false);
+    }
+  }, [pending, state.post, setFormDailog, setPostData, postData]);
 
   return (
     <form className='flex flex-col gap-4 p-5' action={formAction}>
