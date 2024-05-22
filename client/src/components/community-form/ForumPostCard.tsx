@@ -5,6 +5,7 @@ import { ChevronUpIcon, ChevronDownIcon, PersonIcon, ChatBubbleIcon } from "@rad
 import { PostDataType } from "@/types/posts";
 import Link from "next/link";
 import { useState } from "react";
+import { Date, getDate } from "@/lib/utils";
 
 export function FormPostCard({ PostData }: { PostData: PostDataType }) {
   const mouseX = useMotionValue(0);
@@ -92,7 +93,7 @@ const PostSection = ({ PostData }: { PostData: PostDataType }) => {
     <Link href={`/post/${PostData.id}`} className="w-full p-3 flex flex-col gap-1 rounded-r-md">
       <div className="h-[20%] flex items-center gap-3 text-xs">
         {/* TODO: Post tags in future <span>#Updates</span> */}
-        <span>{PostData.created_on.toString()}</span>
+        <span>{getDate(PostData.created_on)}</span>
       </div>
       <div className="h-[20%] text-lg dark:text-neutral-100 font-semibold line-clamp-1">{PostData.title}</div>
       <div className="h-[25%] text-sm dark:text-neutral-300 line-clamp-2">{PostData.body}</div>
