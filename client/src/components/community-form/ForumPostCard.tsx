@@ -4,6 +4,7 @@ import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
 import { ChevronUpIcon, ChevronDownIcon, PersonIcon, ChatBubbleIcon } from "@radix-ui/react-icons";
 import { PostDataType } from "@/types/posts";
 import Link from "next/link";
+import { useState } from "react";
 
 export function FormPostCard({ PostData }: { PostData: PostDataType }) {
   const mouseX = useMotionValue(0);
@@ -36,16 +37,49 @@ export function FormPostCard({ PostData }: { PostData: PostDataType }) {
   );
 }
 
-const LikeDislikeSection = ({ likes, dislikes }: { likes: number, dislikes: number }) => {
+const LikeDislikeSection = ({ likes, dislikes }: { likes: number; dislikes: number }) => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [currentLikes, setCurrentLikes] = useState<number>(likes);
+  const [isDisliked, setIsDisliked] = useState<boolean>(false);
+  const [currentDislikes, setCurrentDislikes] = useState<number>(dislikes);
+
+  const toggleLikeButton = () => {
+    if (isLiked) {
+      setCurrentLikes(currentLikes - 1);
+      setIsLiked(false);
+    } else {
+      if (isDisliked) {
+        setIsDisliked(false);
+        setCurrentDislikes(currentDislikes - 1);
+      }
+      setCurrentLikes(currentLikes + 1);
+      setIsLiked(true);
+    }
+  };
+
+  const toggleDislikeButton = () => {
+    if (isDisliked) {
+      setCurrentDislikes(currentDislikes - 1);
+      setIsDisliked(false);
+    } else {
+      if (isLiked) {
+        setCurrentLikes(currentLikes - 1);
+        setIsLiked(false);
+      }
+      setCurrentDislikes(currentDislikes + 1);
+      setIsDisliked(true);
+    }
+  };
+
   return (
-    <section className="cursor-pointer dark:bg-neutral-900 flex flex-col rounded-l-2xl">
-      <div className="px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-tl-2xl hover:bg-green-300/30 transition-colors duration-200">
+    <section className="dark:bg-neutral-900 flex flex-col rounded-l-2xl">
+      <div className={`${isLiked === true ? 'bg-green-600' : 'bg-green-300/40 hover:bg-green-300/30'} cursor-pointer px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-tl-2xl transition-colors duration-200`} onClick={toggleLikeButton}>
         <ChevronUpIcon className="dark:text-neutral-300 group-hover/like:text-green-300" />
-        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/like:text-neutral-50">{likes}</span>
+        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/like:text-neutral-50">{currentLikes}</span>
       </div>
-      <div className="px-4 group/dislike h-1/2 flex flex-col gap-2 items-center justify-center rounded-bl-2xl hover:bg-red-300/30 transition-colors duration-200">
+      <div className={`${isDisliked === true ? 'bg-red-600' : 'bg-red-400/40 hover:bg-red-400/30'} cursor-pointer px-4 group/like h-1/2 flex flex-col gap-2 items-center justify-center rounded-bl-2xl transition-colors duration-200`} onClick={toggleDislikeButton}>
         <ChevronDownIcon className="dark:text-neutral-300 group-hover/dislike:text-red-300" />
-        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/dislike:text-neutral-50">{dislikes}</span>
+        <span className="text-xs font-semibold dark:text-neutral-100 group-hover/dislike:text-neutral-50">{currentDislikes}</span>
       </div>
     </section>
   )

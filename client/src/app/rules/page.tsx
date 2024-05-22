@@ -3,7 +3,7 @@ import { getRules } from "@/config/WebSite";
 const Rules = () => {
   return (
     <div className="pt-5 w-full min-h-[88vh] flex flex-col items-center">
-      <h1 className="text-3xl font-bold dark:text-white mb-5">General Rules</h1>
+      <h1 className="text-3xl font-bold dark:text-white mb-5 font-caveat tracking-widest">General Rules</h1>
       <div className="w-5/6 h-full flex flex-col items-center pb-20">
         {getRules.map((rule: any, index: number) => (
           <div
@@ -12,7 +12,7 @@ const Rules = () => {
           >
             <div className="flex items-center text-base mb-1">
               <span className="dark:text-white/80 font-bold">{index + 1}</span>
-              <span className=" dark:text-slate-300 font-medium ml-2">
+              <span className=" dark:text-slate-300 font-medium ml-2 tracking-wide leading-5">
                 {rule.title}
               </span>
             </div>

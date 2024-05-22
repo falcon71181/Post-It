@@ -62,16 +62,50 @@ const PostCard = ({ postData }: { postData: IndividualPostDataType | null }) => 
 }
 
 const PostStatusCard = ({ postStatus, replyDialog }: { postStatus: { likes: number, dislikes: number, noOfReplies: number }, replyDialog: { replyFormState: boolean, setReplyForm: Dispatch<SetStateAction<boolean>> } }) => {
+
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [currentLikes, setCurrentLikes] = useState<number>(postStatus.likes);
+  const [isDisliked, setIsDisliked] = useState<boolean>(false);
+  const [currentDislikes, setCurrentDislikes] = useState<number>(postStatus.dislikes);
+
+  const toggleLikeButton = () => {
+    if (isLiked) {
+      setCurrentLikes(currentLikes - 1);
+      setIsLiked(false);
+    } else {
+      if (isDisliked) {
+        setIsDisliked(false);
+        setCurrentDislikes(currentDislikes - 1);
+      }
+      setCurrentLikes(currentLikes + 1);
+      setIsLiked(true);
+    }
+  };
+
+  const toggleDislikeButton = () => {
+    if (isDisliked) {
+      setCurrentDislikes(currentDislikes - 1);
+      setIsDisliked(false);
+    } else {
+      if (isLiked) {
+        setCurrentLikes(currentLikes - 1);
+        setIsLiked(false);
+      }
+      setCurrentDislikes(currentDislikes + 1);
+      setIsDisliked(true);
+    }
+  };
+
   return (
     <div className="w-full h-12 rounded-md flex justify-between border border-border bg-background">
       <div className="flex">
-        <div className="h-12 px-3 flex gap-2 items-center text-xs rounded-l-md border hover:border-border hover:bg-green-300/30 cursor-pointer transition-colors duration-200">
+        <div className={`${isLiked ? 'bg-green-600' : 'bg-green-300/40 hover:bg-green-300/30'} h-12 px-3 flex gap-2 items-center text-xs rounded-l-md border hover:border-border cursor-pointer transition-colors duration-200`} onClick={toggleLikeButton}>
           <ArrowUpIcon />
-          <h1>{postStatus.likes}</h1>
+          <h1>{currentLikes}</h1>
         </div>
-        <div className="h-12 px-3 flex gap-2 items-center text-xs border hover:border-border hover:bg-red-400/30 cursor-pointer transition-colors duration-200">
+        <div className={`${isDisliked ? 'bg-red-600' : 'bg-red-400/40 hover:bg-red-400/30'} h-12 px-3 flex gap-2 items-center text-xs border hover:border-border cursor-pointer transition-colors duration-200`} onClick={toggleDislikeButton}>
           <ArrowDownIcon />
-          <h1>{postStatus.dislikes}</h1>
+          <h1>{currentDislikes}</h1>
         </div>
         <div className="h-12 px-3 flex gap-2 items-center text-xs rounded-r-md hover:bg-accent cursor-pointer transition-colors duration-200"
           onClick={() => replyDialog.setReplyForm(!replyDialog.replyFormState)}
