@@ -53,7 +53,7 @@ const PostCard = ({ postData }: { postData: IndividualPostDataType | null }) => 
       <h1 className="text-3xl font-semibold">{postData?.post?.title}</h1>
       <div className="w-full text-gray-800 dark:text-neutral-400 text-sm flex justify-between items-center">
         <h1 className="font-caveat tracking-wider text-base">by {postData?.post?.leader}</h1>
-        <h1>on {getDate(postData?.post?.created_on!)}</h1>
+        {postData?.post && (<h1>on {getDate(postData.post.created_on)}</h1>)}
       </div>
       <p className="text-sm text-150 leading-6 tracking-wide">
         {postData?.post?.body}
