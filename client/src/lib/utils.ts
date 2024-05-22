@@ -10,3 +10,8 @@ export function getDate(date: Date) {
     const formatedDate = format(date, 'do MMM yyyy');
     return formatedDate;
 }
+
+export function getSec(date: Date) {
+    const formatedDate = format(date, 'kk:mm');
+    return formatedDate;
+}

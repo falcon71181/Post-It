@@ -1,5 +1,6 @@
 import { socket } from "@/lib/socket";
 import type { Message } from "@/app/global/page";
+import { getSec } from "@/lib/utils";
 
 type MessageCardProps = {
   data: Message
@@ -15,18 +16,7 @@ const MessageCard = ({ data }: MessageCardProps) => {
       <code className='dark:text-muted-foreground shrink-0 lg:flex hidden items-center justify-center'>
         {data.messageObj.createdOn && (
           <code>
-            {
-              new Date(Number(data.messageObj.createdOn) * 1000)
-                .toLocaleString('en-US', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })
-                .replace(',', '')
-                .replace(/\//g, '-')
-            }
+            {getSec(new Date(data.messageObj.createdOn))}
           </code>
         )}
       </code>
