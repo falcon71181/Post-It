@@ -165,7 +165,7 @@ const ReplyCard = ({ reply }: { reply: ReplyType }) => {
     <div className="w-full min-h-12 p-3 bg-background flex flex-col gap-3 border border-border rounded-lg hover:border hover:border-l-yellow-500 hover:translate-x-1 transition-all duration-300 ">
       <div className="flex justify-between dark:text-neutral-400 text-gray-800">
         <h1 className="text-base font-caveat tracking-wider">by {reply.leader}</h1>
-        <span className="text-xs">{getDate(reply.created_on)}</span>
+        {reply.created_on && (<span className="text-xs">{getDate(reply.created_on)}</span>)}
       </div>
       <p className="text-sm text-150 leading-6 tracking-wide">
         {reply.body}
