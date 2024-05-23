@@ -18,7 +18,7 @@ Post-It is an interactive online platform that facilitates engaging discussions 
 #### 🧬 Running locally for development
 
 ## Installation
-1. Clone the TaskSync repository to your local machine:
+1. Clone the Post-It repository to your local machine:
 ```bash
 git clone https://github.com/falcon71181/Post-It
 cd Post-It
